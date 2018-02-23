@@ -1,0 +1,72 @@
+---
+title: "movie"
+author: "Bhaumik Shah"
+date: "23 February 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+#Exploring dataset
+```{r}
+movie=read.csv("C:\\Users\\Administrator\\Desktop\\DATASETS\\Movie-Ratings.csv")
+
+str(movie)
+dim(movie)
+summary(movie)
+head(movie)
+View(movie)
+colnames(movie)<-c("Film","Genre","CriticRatings","AudienceRatings","Budget","Year")
+```
+#Top 10 movies with critic rating and audience rating above 80
+```{r}
+ratings<-movie[movie$CriticRatings > 80 & movie$AudienceRatings > 80,]%>%top_n(10)
+head(ratings,10)
+```
+
+As we can see top 10 movies with ratings above 80 includes 50/50(comedy), Hugo(adventure), mission impossible 4 (action) etc. Out of top 10 movies 4 movies are in drama genre which shows audience and critic like more of drama movies compared to other genre
+
+#Movies with budget lower than $10 million dollar and audience rating higher than 80
+
+```{r}
+lbudget= movie[movie$Budget<10 & movie$AudienceRatings > 80 & movie$CriticRatings> 80,]
+head(lbudget)
+```
+We can see here that movies with budget less than $10 million dollar and ratings above 80 are from Comedy and drama genre only ,so this will be an important insight to movie makers to make more movies in this genre and can have more chances of success with low budget
+
+
+#Top 10 movies with high budget & low rating
+
+```{r}
+Hbudget<-movie[movie$Budget > 80 ,]%>%top_n(10)
+head(Hbudget,n=10)
+```
+We can see here that most costliest genre in movies is action with all movies having budget above 90 crores and max. budget of 200 crores and all these movies are produced in the year 2011.
+
+#Years with highest and lowest movie produced
+```{r}
+produce=movie%>%group_by(movie$Year)%>%summarise(movie=n())
+head(produce, n=20)
+```
+
+We can see here that 2008 produced the highest movies i.e. 125 and the year before to that i.e. 2007 produced the lowest movies i.e. only 79 movies. And 2011 also produced movies same as 2008
+
+
+
